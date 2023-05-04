@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+
+    <title>Document</title>
+    <style>
+        table {
+            border-collapse: collapse;
+        }
+
+        td {
+            border: 1px solid black;
+        }
+    </style>
+</head>
+
+<body onload="cal()">
+
+    <input type="button" value="이전달" onclick="prev()">
+    <input type="button" value="다음달" onclick="next()">
+
+
+    <div id="wrap"></div>
+
+
+    <script>
+        let date = new Date();
+    
+    
+        function prev() {
+            date = new Date(date.getFullYear(), date.getMonth() - 1, date.getDate());
+            cal();
+        }
+        function next() {
+            date = new Date(date.getFullYear(), date.getMonth() + 1, date.getDate());
+            cal();
+        }
+
+        function cal() {
+            let week = ["일", "월", "화", "수", "목", "금", "토"];
+            // 마지막 날 가져오기 - 전체 날짜만큼 for 문 하려고
+            let lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
+            // 첫날의 요일 구하기 - 처음에 빈칸 개수 알려고
+            let firstWeek = new Date(date.getFullYear(), date.getMonth(), 1).getDay();
+            let cnt = 0;// 한주는 7일이니까 7일계산하려고
+            //오늘날짜
+            let str = date.getFullYear() + "-" + //년도
+                (date.getMonth() + 1) + "-" + // 월
+                date.getDate() + "(" + week[date.getDay()] + ")<br>";// 일 (요일)
+            
+                str += "<table><tr>";
+            // 일~토까지 요일 출력
+            for (let i = 0; i < week.length; i++) {
+                str += "<td>" + week[i] + "</td>";
+            }
+            str += "</tr><tr>";
+            // 1일의 앞에 빈칸 만들기
+            for (let i = 0; i < firstWeek; i++) {
+                cnt++;
+                str += "<td>&nbsp;</td>";
+            }
+
+            // 실제 일 출력
+            for (let i = 1; i <= lastDay; i++) {
+                cnt++;
+                str += "<td>" + i + "</td>";
+                if (cnt == 7) {
+                    str += "</tr><tr>";
+                    cnt = 0;
+                }
+            }
+            str += "</tr></table>";
+            document.getElementById("wrap").innerHTML = str;
+        }
+    </script>
+</body>
+
+</html>
